@@ -11,6 +11,11 @@ IMG_DIR = os.path.join(os.path.dirname(__file__), "..", "assets")
 # Assets Constants
 ICON = pygame.image.load(os.path.join(IMG_DIR, "DinoWallpaper.png"))
 
+#Constante dos obstacles
+OBSTACLE_Y_POS = 325
+
+FONT_STYLE = "freesansbold.ttf"
+
 RUNNING = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun1.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2.png")),
@@ -70,3 +75,5 @@ BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
 DEFAULT_TYPE = "default"
+
+BIRD1 = pygame.image.load(os.path.join(IMG_DIR, "Bird/Bird1.png"))
