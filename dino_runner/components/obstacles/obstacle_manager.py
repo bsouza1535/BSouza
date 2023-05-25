@@ -3,7 +3,7 @@ import pygame
 
 from dino_runner.components.obstacles.bird import Bird
 from dino_runner.components.obstacles.cactus import Cactus
-from dino_runner.utils.constants import SMALL_CACTUS, LARGE_CACTUS, BIRD
+from dino_runner.utils.constants import SMALL_CACTUS, LARGE_CACTUS, BIRD, EXP
 #from dino_runner.components.game import Game
 
 
@@ -11,6 +11,7 @@ class ObstacleManager:
     def __init__(self):
         self.obstacles = []
         self.large = []
+        self.sond_explo = EXP
  #       self.game = Game()
 
     
@@ -21,7 +22,7 @@ class ObstacleManager:
                 self.obstacles.append(Cactus(SMALL_CACTUS[random.randint(0,2)]))
             elif option == 2:
                 cactus = Cactus(LARGE_CACTUS[random.randint(0,2)])
-                cactus.rect.y = 300# mudando a posição do cactus Largo
+                cactus.rect.y = 490# mudando a posição do cactus Largo
                 self.obstacles.append(cactus)
             elif option == 3:
                 self.obstacles.append(Bird(BIRD))
@@ -29,6 +30,8 @@ class ObstacleManager:
         for obstacle in self.obstacles:
             obstacle.update(game.game_speed, self.obstacles)
             if game.player.dino_rect.colliderect(obstacle.rect):
+                pygame.mixer.music.stop()
+                self.sond_explo.play()
                 pygame.time.delay(500)
                 game.playing = False
                 game.executing = False
