@@ -8,10 +8,10 @@ from dino_runner.components.power_ups.power_up_manager import PowerUpManager
 import random
 
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
+from dino_runner.components.power_ups.shield import Shield
+
 
 from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, CLOUD, FONT_STYLE, DEFAULT_TYPE, AUDIO, BACK, RUNNING_HAMMER, HAMMER
-
-from dino_runner.components.hammer import Hammer
 
 from dino_runner.components.dinosaur import Dinosaur
 
@@ -34,10 +34,11 @@ class Game:
         self.score = 0
         self.death_count = 0
 
+        self.shield = Shield
+
         self.musicFundo = AUDIO
         
         self.player = Dinosaur()
-        self.hammer = Hammer()
         self.playing = False
         self.game_speed = 20
         self.x_pos_bg = 0
@@ -76,7 +77,7 @@ class Game:
             self.events()
             self.update()
             self.draw()
-        #pygame.quit()
+        pygame.quit()
 
     def events(self):
         for event in pygame.event.get():
@@ -87,12 +88,14 @@ class Game:
 
 
     def update(self):
+        dinohammershield = 0
         user_input = pygame.key.get_pressed()
-        if self.score >= 1000:
-            self.hammer.update(user_input)
-            self.player = self.hammer
+        if self.score >= 100:
+            dinohammershield = random.randint(1,2)
+            self.player.update(user_input, dinohammershield)
+            self.shield
         else:
-            self.player.update(user_input)
+            self.player.update(user_input, dinohammershield)
         self.update_score()
         self.update_speed()
         self.obstacle_manager.update(self)
@@ -249,7 +252,7 @@ class Game:
                 user_input = pygame.key.get_pressed()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_c:
-                        self.player.update(user_input)
+                        #self.player.update(user_input)
                         self.obstacle_manager.reset_obstacles()
                         self.run()
                     elif event.key == pygame.K_r:

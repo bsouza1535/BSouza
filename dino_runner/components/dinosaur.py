@@ -1,6 +1,6 @@
 import pygame
 
-from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING
+from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING, RUNNING_HAMMER, JUMPING_HAMMER, DUCKING_HAMMER, DUCKING_SHIELD, JUMPING_SHIELD, RUNNING_SHIELD
 
 Y_POS = 500
 Y_POS_DUCK = 530
@@ -25,7 +25,8 @@ class Dinosaur:
         self.jump_vel = JUMP_VEL
             
     
-    def update(self, user_input):
+    def update(self, user_input, dinohammershield):
+        self.dinohammershield = dinohammershield
         
         if user_input[pygame.K_UP] and not self.dino_jump and self.dino_rect.y == Y_POS:
             self.dino_run = False
@@ -72,7 +73,13 @@ class Dinosaur:
         self.step_count += 1
     
     def right(self):
-        self.image = RUNNING[self.step_count//3]
+        if self.dinohammershield == 1:
+            self.image = RUNNING_HAMMER[self.step_count//3]
+        elif self.dinohammershield == 2:
+            self.image = RUNNING_SHIELD[self.step_count//3]
+        else:
+            self.image = RUNNING[self.step_count//3]
+            
         if self.dino_right == True:
             if self.dino_rect.x < 600:
                 self.dino_rect.x += 10
@@ -84,7 +91,13 @@ class Dinosaur:
         self.step_count += 1
         
     def left(self):
-        self.image = RUNNING[self.step_count//3]
+        if self.dinohammershield == 1:
+            self.image = RUNNING_HAMMER[self.step_count//3]
+        elif self.dinohammershield == 2:
+            self.image = RUNNING_SHIELD[self.step_count//3]
+        else:
+            self.image = RUNNING[self.step_count//3]
+            
         if self.dino_left == True:
             if self.dino_rect.x > 10:
                 self.dino_rect.x -= 10
@@ -96,20 +109,38 @@ class Dinosaur:
         self.step_count += 1
         
     def run(self):
-        self.image = RUNNING[self.step_count//3]
+        if self.dinohammershield == 1:
+            self.image = RUNNING_HAMMER[self.step_count//3]
+        elif self.dinohammershield == 2:
+            self.image = RUNNING_SHIELD[self.step_count//3]
+        else:
+            self.image = RUNNING[self.step_count//3]
+            
         self.dino_rect.y = Y_POS
         
         self.step_count+=1
     
     def duck(self):
-        self.image = DUCKING[self.step_count//3]
+        if self.dinohammershield == 1:
+            self.image = DUCKING_HAMMER[self.step_count//3]
+        elif self.dinohammershield == 2:
+            self.image = DUCKING_SHIELD[self.step_count//3]
+        else:
+            self.image = DUCKING[self.step_count//3]
+            
+            
         self.dino_rect.y = Y_POS_DUCK
         
         self.dino_duck = False
         self.step_count+=1
     
     def jump(self):
-        self.image = JUMPING
+        if self.dinohammershield == 1:
+            self.image = JUMPING_HAMMER
+        elif self.dinohammershield == 2:
+            self.image = JUMPING_SHIELD
+        else:
+            self.image = JUMPING
         
         if self.dino_jump:
             self.dino_rect.y -= self.jump_vel*4
@@ -119,7 +150,7 @@ class Dinosaur:
             self.dino_rect_y = Y_POS
             self.dino_jump = False
             self.jump_vel = JUMP_VEL
-    
+            
     def draw(self, screen):
         screen.blit(self.image,(self.dino_rect.x, self.dino_rect.y))
         
